@@ -2,7 +2,8 @@ name: 'Deploy GCP Infrastructure'
 
 on:
   push:
-    path: 'terraform/**'
+    paths: 
+    - 'terraform/**'
     branches: [ "main" ]
 
 permissions:
