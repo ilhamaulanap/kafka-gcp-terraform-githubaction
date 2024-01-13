@@ -1,4 +1,4 @@
-name: 'Destroy GCP Infrastructure'
+name: 'Destroy GCP Infrastructure (Manual)'
 
 on:
   workflow_dispatch:
