@@ -1,4 +1,4 @@
-name: 'Deploy GCP Infrastructure'
+name: 'Deploy Terraform Backend'
 
 on:
   workflow_dispatch:
