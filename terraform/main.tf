@@ -11,6 +11,12 @@ resource "google_storage_bucket" "my_bucket" {
   force_destroy = true
 }
 
+resource "google_storage_bucket" "terraform_backend" {
+  name          = var.gcs_bucket_terraform
+  location      = var.gcs_bucket_location
+  force_destroy = true
+}
+
 # Create a Google Compute Engine instance
 resource "google_compute_instance" "my_instance" {
   name         = var.compute_instance_name
