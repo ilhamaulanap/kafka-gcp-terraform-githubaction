@@ -1,6 +1,6 @@
 terraform {
   backend "gcs" {
-    bucket         = "DE-zoomcamp-terraform-backend"
+    bucket         = "de-zoomcamp-terraform-state-backend"
     prefix         = "/terraform.tfstate"
     credentials    = "key.json"
   }
