@@ -4,7 +4,6 @@ on:
   push:
     path: 'terraform/**'
     branches: [ "main" ]
-  pull_request:
 
 permissions:
   contents: read
