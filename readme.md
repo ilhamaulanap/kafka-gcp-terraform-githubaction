@@ -1,1 +1,2 @@
 ## this is repo for data engineering zoomcamp
+[![Deploy GCP Infrastructure](https://github.com/ilhamaulanap/DE-zoomcamp/actions/workflows/deploy.yml/badge.svg?branch=main&event=deployment_status)](https://github.com/ilhamaulanap/DE-zoomcamp/actions/workflows/deploy.yml)
