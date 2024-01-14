@@ -19,22 +19,47 @@ variable "gcs_bucket_location" {
   type        = string
 }
 
-variable "compute_instance_name" {
-  description = "The name of the Compute Engine instance"
+variable "airflow_instance_name" {
+  description = "The name of the airflow Engine instance"
   type        = string
 }
 
-variable "compute_instance_type" {
-  description = "The machine type of the Compute Engine instance"
+variable "airflow_instance_type" {
+  description = "The machine type of the airflow Engine instance"
   type        = string
 }
 
-variable "compute_instance_zone" {
-  description = "The zone of the Compute Engine instance"
+variable "airflow_instance_zone" {
+  description = "The zone of the airflow Engine instance"
   type        = string
 }
 
-variable "compute_instance_image" {
+variable "airflow_instance_zone" {
+  description = "The zone of the airflow Engine instance"
+  type        = string
+}
+
+variable "kafka_instance_name" {
+  description = "The name of the kafka cluster Engine instance"
+  type        = string
+}
+
+variable "kafka_instance_type" {
+  description = "The machine type of the kafka cluster Engine instance"
+  type        = string
+}
+
+variable "kafka_instance_zone" {
+  description = "The zone of the kafka cluster Engine instance"
+  type        = string
+}
+
+variable "kafka_instance_zone" {
+  description = "The zone of the kafka cluster Engine instance"
+  type        = string
+}
+
+variable "kafka_instance_image" {
   description = "The image for the Compute Engine instance"
   type        = string
 }

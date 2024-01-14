@@ -13,13 +13,14 @@ resource "google_storage_bucket" "my_bucket" {
 
 
 # Create a Google Compute Engine instance
-resource "google_compute_instance" "my_instance" {
-  name         = var.compute_instance_name
-  machine_type = var.compute_instance_type
-  zone         = var.compute_instance_zone
+resource "google_compute_instance" "airflow_instance" {
+  name         = var.airflow_instance_name
+  machine_type = var.airflow_instance_type
+  zone         = var.airflow_instance_zone
 
   boot_disk {
     initialize_params {
+      size = var.airflow_disk_size
       image = var.compute_instance_image
     }
   }
@@ -28,6 +29,24 @@ resource "google_compute_instance" "my_instance" {
     network = "default"
   }
 }
+
+resource "google_compute_instance" "kafka_instance" {
+  name         = var.kafka_instance_name
+  machine_type = var.kafka_instance_type
+  zone         = var.kafka_instance_zone
+
+  boot_disk {
+    initialize_params {
+      size = var.kafka_disk_size
+      image = var.compute_instance_image
+    }
+  }
+
+  network_interface {
+    network = "default"
+  }
+}
+
 
 # Create a BigQuery dataset
 resource "google_bigquery_dataset" "my_dataset" {
