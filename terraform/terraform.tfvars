@@ -2,7 +2,7 @@ gcp_project               = "de-datapipeline"
 gcp_region                = "asia-southeast1 "
 
 gcs_bucket_name           = "de-zoomcamp-datasets-projects"
-gcs_bucket_location       = "Asia"
+gcs_bucket_location       = "US"
 
 airflow_instance_name     = "de-projects-airflow"
 airflow_instance_type     = "e2-standard-2"
