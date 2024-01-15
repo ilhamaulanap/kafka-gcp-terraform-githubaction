@@ -42,7 +42,7 @@ jobs:
 
     - name: Generate SSH Key
       run: |
-        ssh-keygen -t rsa -b 4096 -C "your_email@example.com" -f $HOME/.ssh/github_action_key -N ''
+        ssh-keygen -t rsa -b 4096 -C "ilhamaulanap@gmail.com" -f $HOME/.ssh/github_action_key -N ''
 
     - name: Display Public Key
       run: |
@@ -53,15 +53,16 @@ jobs:
       with:
         credentials_json: '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}'
 
-    - id: compute-ssh
+    - name: Run Commands on GCP Instance
       uses: google-github-actions/ssh-compute@v1
       with:
         instance_name: $KAFKA_INSTANCE
         zone: $KAFKA_INSTANCE_ZONE
         ssh_private_key: $HOME/.ssh/github_action_key
-        command: 'git clone https://github.com/${{ github.repository }}.git && \
-                      cd \$(basename \"${{ github.repository }}\")/kafka && \
-                      sudo apt-get update && \
-                      sudo apt-get install -y docker.io && \
-                      docker-compose build && \
-                      docker-compose up -d'
+        command: |
+          git clone https://github.com/ilhamaulanap/DE-zoomcamp.git
+          cd "$(basename "ilhamaulanap/DE-zoomcamp")/kafka"
+          sudo apt-get update
+          sudo apt-get install -y docker.io
+          docker-compose build
+          docker-compose up -d
