@@ -43,12 +43,10 @@ jobs:
     - name: Generate SSH Key
       run: |
         ssh-keygen -t rsa -b 4096 -C "your_email@example.com" -f $HOME/.ssh/github_action_key -N ''
-        echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
 
     - name: Display Public Key
       run: |
         cat $HOME/.ssh/github_action_key.pub
-        echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
     
     - id: 'auth'
       uses: 'google-github-actions/auth@v2'
@@ -60,7 +58,7 @@ jobs:
       with:
         instance_name: $KAFKA_INSTANCE
         zone: $KAFKA_INSTANCE_ZONE
-        ssh_private_key: ${{ secrets.GITHUB_TOKEN }}
+        ssh_private_key: $HOME/.ssh/github_action_key
         command: 'git clone https://github.com/${{ github.repository }}.git && \
                       cd \$(basename \"${{ github.repository }}\")/kafka && \
                       sudo apt-get update && \
