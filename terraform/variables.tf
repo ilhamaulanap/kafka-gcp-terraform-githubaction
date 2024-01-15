@@ -68,7 +68,7 @@ variable "kafka_disk_size" {
 variable "kafka_ports" {
   description = "kafka ports"
   default = "9092"
-  type = string
+  type = list(string)
 }
 
 variable "compute_instance_image" {
