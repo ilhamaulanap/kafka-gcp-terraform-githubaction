@@ -37,14 +37,13 @@ jobs:
     - name: Use TFVars
       run: |
         TFVARS_FILE=${GITHUB_WORKSPACE}/terraform/terraform.tfvars
-        TFVARS_FILE=${GITHUB_WORKSPACE}/terraform/terraform.tfvars
-        export GCP_PROJECT_ID=$(grep 'gcp_project' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]')
-        export KAFKA_INSTANCE=$(grep 'kafka_instance_name' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]')
-        export KAFKA_INSTANCE_ZONE=$(grep 'kafka_instance_zone' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]')
+        export GCP_PROJECT_ID=$(grep 'gcp_project' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]' | tr -d '"')
+        export KAFKA_INSTANCE=$(grep 'kafka_instance_name' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]' | tr -d '"')
+        export KAFKA_INSTANCE_ZONE=$(grep 'kafka_instance_zone' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]' | tr -d '"')
 
-        echo "GCP_PROJECT_ID=$GCP_PROJECT_ID" >> $GITHUB_ENV
-        echo "KAFKA_INSTANCE=$KAFKA_INSTANCE" >> $GITHUB_ENV
-        echo "KAFKA_INSTANCE_ZONE=$KAFKA_INSTANCE_ZONE" >> $GITHUB_ENV
+        echo GCP_PROJECT_ID=$GCP_PROJECT_ID >> $GITHUB_ENV
+        echo KAFKA_INSTANCE=$KAFKA_INSTANCE >> $GITHUB_ENV
+        echo KAFKA_INSTANCE_ZONE=$KAFKA_INSTANCE_ZONE >> $GITHUB_ENV
 
         echo "GCP_PROJECT_ID: $GCP_PROJECT_ID"
         echo "KAFKA_INSTANCE: $KAFKA_INSTANCE"
