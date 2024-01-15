@@ -48,15 +48,22 @@ jobs:
     - name: 'Set up Cloud SDK'
       uses: 'google-github-actions/setup-gcloud@v2'
 
-    - name: SSH into GCE Instance 
+    - name: Generate SSH key pair
       run: |
-        gcloud compute ssh --zone "$KAFKA_INSTANCE_ZONE" "$KAFKA_INSTANCE" --project "$GCP_PROJECT" --quiet
+        ssh-keygen -t rsa -b 4096 -C "ilhamaulanap@gmail.com" -N "" -f ~/.ssh/gcp_key
+        chmod 600 ~/.ssh/gcp_key
 
-    - name: clone repo and deploy docker image
+    - name: Copy public key to clipboard
       run: |
-        git clone https://github.com/${{ github.repository }}.git \
-            && cd $(basename "${{ github.repository }}")/kafka \
-            && sudo apt-get update \
-            && sudo apt-get install -y docker.io \
-            && docker-compose build \
-            && docker-compose up -d
+        cat ~/.ssh/gcp_key.pub
+        echo "Public key copied to clipboard. Add this to your Compute Engine instance's metadata or authorized_keys."
+
+    - name: SSH into GCP Instance
+      run: |
+        gcloud compute ssh --zone "$KAFKA_INSTANCE_ZONE" "$KAFKA_INSTANCE" --project "$GCP_PROJECT" --quiet --ssh-key-file=~/.ssh/gcp_key --command "\
+          git clone https://github.com/${{ github.repository }}.git && \
+          cd \$(basename \"${{ github.repository }}\")/kafka && \
+          sudo apt-get update && \
+          sudo apt-get install -y docker.io && \
+          docker-compose build && \
+          docker-compose up -d
