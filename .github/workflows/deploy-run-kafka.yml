@@ -31,10 +31,9 @@ jobs:
 
     - name: Set Terraform Variables
       run: |
-        # Read terraform.tfvars and set environment variables
         while IFS= read -r line; do
           export "$line"
-        done < <(awk -F= '{print $1 "=" $2}' ./terraform/terraform.tfvars)
+        done < <(awk -F= '{print $1 "=" $2}' "${GITHUB_WORKSPACE}/terraform/terraform.tfvars")
     
     - id: 'auth'
       uses: 'google-github-actions/auth@v2'
