@@ -89,13 +89,13 @@ jobs:
         ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
         command: 'sudo apt-get install -y docker.io docker-compose'
 
-    - name: reboot instance
+    - name: edit user permission and reboot instance
       uses: google-github-actions/ssh-compute@v1
       with:
         instance_name:  ${{ env.KAFKA_INSTANCE }}
         zone: ${{ env.KAFKA_INSTANCE_ZONE }}
         ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
-        command: 'sudo reboot'
+        command: 'sudo usermod -aG docker $USER && sudo reboot'
       continue-on-error: true
 
     - name: Delay Step
