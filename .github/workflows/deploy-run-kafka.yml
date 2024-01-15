@@ -59,10 +59,10 @@ jobs:
       with:
         instance_name: $KAFKA_INSTANCE
         zone: $KAFKA_INSTANCE_ZONE
-        ssh_private_key: $HOME/.ssh/github_action_key
+        ssh_private_key: "$HOME/.ssh/github_action_key"
         command: |
-          git clone https://github.com/ilhamaulanap/DE-zoomcamp.git
-          cd "$(basename "ilhamaulanap/DE-zoomcamp")/kafka"
+          git clone https://github.com/${GITHUB_REPOSITORY}.git
+          cd "$(basename "${GITHUB_REPOSITORY}")/kafka"
           sudo apt-get update
           sudo apt-get install -y docker.io
           docker-compose build
