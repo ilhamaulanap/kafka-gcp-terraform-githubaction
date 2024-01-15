@@ -27,6 +27,9 @@ resource "google_compute_instance" "airflow_instance" {
 
   network_interface {
     network = "default"
+    access_config {
+      // This will create an external IP address for the instance
+    }
   }
 }
 
@@ -44,6 +47,9 @@ resource "google_compute_instance" "kafka_instance" {
 
   network_interface {
     network = "default"
+    access_config {
+      // This will create an external IP address for the instance
+    }
   }
 }
 
@@ -51,7 +57,7 @@ resource "google_compute_firewall" "port_rules" {
   project     = var.gcp_project
   name        = "kafka-broker-port"
   network     = var.network
-  description = "Opens port 9092 in the Kafka VM for Spark cluster to connect"
+  description = "Opens port 9092 in the Kafka VM"
 
   allow {
     protocol = "tcp"
