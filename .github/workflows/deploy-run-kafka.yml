@@ -35,14 +35,15 @@ jobs:
         while IFS= read -r line; do
           export "$line"
         done < <(awk -F= '{print $1 "=" $2}' ./terraform/terraform.tfvars)
-
-    - name: Configure Google Cloud SDK
-      uses: google-github-actions/setup-gcloud@master
-      with:
-        service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
-        project_id: $gcp_project 
-        compute_region: $gcp_region
     
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v2'
+      with:
+        credentials_json: '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}'
+
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v2'
+
     - name: SSH into GCE Instance and 
       run: |
         gcloud compute ssh --zone "$kafka_instance_zone" "$kafka_instance_name" --project "$gcp_project" \
