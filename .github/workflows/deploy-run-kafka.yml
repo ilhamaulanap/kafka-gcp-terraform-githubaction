@@ -60,9 +60,9 @@ jobs:
 
     - name: SSH into GCP Instance
       run: |
-         gcloud compute ssh "$KAFKA_INSTANCE" \
-          --zone "$KAFKA_INSTANCE_ZONE" \
-          --project "$GCP_PROJECT" \
+         gcloud compute ssh $KAFKA_INSTANCE \
+          --zone $KAFKA_INSTANCE_ZONE \
+          --project $GCP_PROJECT \
           --quiet \
           --ssh-key-file=~/.ssh/gcp_key \
           --command "git clone https://github.com/${{ github.repository }}.git && \
