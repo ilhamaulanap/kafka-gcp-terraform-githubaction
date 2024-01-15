@@ -32,9 +32,9 @@ jobs:
     - name: Use TFVars
       run: |
         TFVARS_FILE=${GITHUB_WORKSPACE}/terraform/terraform.tfvars
-        GCP_PROJECT=$(grep 'gcp_project' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]')
-        KAFKA_INSTANCE=$(grep 'kafka_instance_name' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]')
-        KAFKA_INSTANCE_ZONE=$(grep 'kafka_instance_zone' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]')
+        export GCP_PROJECT_ID=$(grep 'gcp_project' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]')
+        export KAFKA_INSTANCE=$(grep 'kafka_instance_name' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]')
+        export KAFKA_INSTANCE_ZONE=$(grep 'kafka_instance_zone' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]')
 
         echo "GCP_PROJECT: $GCP_PROJECT"
         echo "KAFKA_INSTANCE: $KAFKA_INSTANCE"
@@ -51,7 +51,7 @@ jobs:
 
     - name: debug SSH Key
       run: |
-        echo $GCP_PROJECT
+        echo $GCP_PROJECT_ID
         echo $KAFKA_INSTANCE
         echo $KAFKA_INSTANCE_ZONE
         echo "$HOME/.ssh/github_action_key"
@@ -61,8 +61,8 @@ jobs:
     - name: Run Commands on GCP Instance
       uses: google-github-actions/ssh-compute@v1
       with:
-        instance_name: $KAFKA_INSTANCE
-        zone: $KAFKA_INSTANCE_ZONE
+        instance_name:  ${{ env.KAFKA_INSTANCE }}
+        zone: ${{ env.KAFKA_INSTANCE_ZONE }}
         ssh_private_key: "$HOME/.ssh/github_action_key"
         command: |
           git clone https://github.com/${GITHUB_REPOSITORY}.git
