@@ -34,20 +34,24 @@ jobs:
       with:
         credentials_json: '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}'
 
-    - name: Use TFVars
+    - name: export necessary variable to github env
       run: |
         TFVARS_FILE=${GITHUB_WORKSPACE}/terraform/terraform.tfvars
         export GCP_PROJECT_ID=$(grep 'gcp_project' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]' | tr -d '"')
         export KAFKA_INSTANCE=$(grep 'kafka_instance_name' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]' | tr -d '"')
         export KAFKA_INSTANCE_ZONE=$(grep 'kafka_instance_zone' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]' | tr -d '"')
 
+        export GITHUB_REPOSITORY=${GITHUB_REPOSITORY}
+
         echo GCP_PROJECT_ID=$GCP_PROJECT_ID >> $GITHUB_ENV
         echo KAFKA_INSTANCE=$KAFKA_INSTANCE >> $GITHUB_ENV
         echo KAFKA_INSTANCE_ZONE=$KAFKA_INSTANCE_ZONE >> $GITHUB_ENV
+        echo "GITHUB_REPOSITORY=$GITHUB_REPOSITORY" >> $GITHUB_ENV
 
         echo "GCP_PROJECT_ID: $GCP_PROJECT_ID"
         echo "KAFKA_INSTANCE: $KAFKA_INSTANCE"
         echo "KAFKA_INSTANCE_ZONE: $KAFKA_INSTANCE_ZONE"
+        echo "GITHUB_REPOSITORY: $GITHUB_REPOSITORY"
 
     - name: Run Commands on GCP Instance
       uses: google-github-actions/ssh-compute@v1
