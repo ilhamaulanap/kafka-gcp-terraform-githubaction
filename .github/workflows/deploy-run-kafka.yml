@@ -96,14 +96,6 @@ jobs:
         ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
         command: 'sudo apt-get install -y docker.io docker-compose'
 
-    - name: build image
-      uses: google-github-actions/ssh-compute@v1
-      with:
-        instance_name:  ${{ env.KAFKA_INSTANCE }}
-        zone: ${{ env.KAFKA_INSTANCE_ZONE }}
-        ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
-        command: 'docker-compose build'
-
     - name: run kafka
       uses: google-github-actions/ssh-compute@v1
       with:
