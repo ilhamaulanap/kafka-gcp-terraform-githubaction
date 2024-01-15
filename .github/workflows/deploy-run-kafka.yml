@@ -42,7 +42,7 @@ jobs:
 
     - name: Generate SSH Key
       run: |
-        ssh-keygen -t rsa -b 4096 -C "ilhamaulanap@gmail.com" -f $HOME/.ssh/github_action_key -N ''
+        ssh-keygen -t rsa -f ~/.ssh/github_action_key -C ilhamaulanap2 -b 2048
 
     - name: Display Public Key
       run: |
