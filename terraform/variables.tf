@@ -71,7 +71,7 @@ variable "kafka_ports" {
   type = string
 }
 
-variable "compute_instance_image " {
+variable "compute_instance_image" {
   description = "The image for the Compute Engine instance"
   type        = string
 }
@@ -83,7 +83,7 @@ variable "bigquery_dataset_id" {
 
 
 variable "stg_bq_dataset" {
-  description = "Storage class type for your bucket. Check official docs for more info."
+  description = "staging bigquery"
   type        = string
 }
 

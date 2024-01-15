@@ -65,7 +65,7 @@ resource "google_compute_firewall" "port_rules" {
 
 # Create a BigQuery dataset
 
-resource "google_bigquery_dataset" "my_staging_dataset" {
+resource "google_bigquery_dataset" "my_prod_dataset" {
   dataset_id = var.prod_bigquery_dataset_id
   project    = var.gcp_project
   delete_contents_on_destroy = true
