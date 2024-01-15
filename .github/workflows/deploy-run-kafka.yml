@@ -53,6 +53,7 @@ jobs:
       run: |
         echo $GCP_PROJECT
         echo $KAFKA_INSTANCE
+        echo $KAFKA_INSTANCE_ZONE
         echo "$HOME/.ssh/github_action_key"
         cat "$HOME/.ssh/github_action_key"
         ssh-keygen -y -e -f "$HOME/.ssh/github_action_key"
