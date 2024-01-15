@@ -50,7 +50,7 @@ jobs:
 
     - name: SSH into GCE Instance and 
       run: |
-        gcloud compute ssh --zone "$KAFKA_INSTANCE_ZONE" "$KAFKA_INSTANCE" --project "$GCP_PROJECT" \
+        gcloud compute ssh --zone "$KAFKA_INSTANCE_ZONE" "$KAFKA_INSTANCE" --project "$GCP_PROJECT" --quiet\
         && git clone https://github.com/${{ github.repository }}.git \ 
         && cd $(basename "${{ github.repository }}")/kafka \
         && sudo apt-get update \
