@@ -36,7 +36,7 @@ jobs:
         export KAFKA_INSTANCE=$(grep 'kafka_instance_name' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]')
         export KAFKA_INSTANCE_ZONE=$(grep 'kafka_instance_zone' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]')
 
-        echo "GCP_PROJECT: $GCP_PROJECT"
+        echo "GCP_PROJECT_ID: $GCP_PROJECT_ID"
         echo "KAFKA_INSTANCE: $KAFKA_INSTANCE"
         echo "KAFKA_INSTANCE_ZONE" : $KAFKA_INSTANCE_ZONE
         
@@ -52,8 +52,8 @@ jobs:
     - name: debug SSH Key
       run: |
         echo $GCP_PROJECT_ID
-        echo $KAFKA_INSTANCE
-        echo $KAFKA_INSTANCE_ZONE
+        echo ${{ env.KAFKA_INSTANCE }}
+        echo ${{ env.KAFKA_INSTANCE_ZONE }}
         echo "$HOME/.ssh/github_action_key"
         cat "$HOME/.ssh/github_action_key"
         ssh-keygen -y -e -f "$HOME/.ssh/github_action_key"
