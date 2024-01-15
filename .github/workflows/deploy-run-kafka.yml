@@ -49,10 +49,11 @@ jobs:
       run: |
         ssh-keygen -t rsa -f ~/.ssh/github_action_key -C ilhamaulanap2 -b 2048
 
-    - name: Display Public Key
+    - name: debug SSH Key
       run: |
-        cat $HOME/.ssh/github_action_key
-        chmod 600 $HOME/.ssh/github_action_key
+        echo "$HOME/.ssh/github_action_key"
+        cat "$HOME/.ssh/github_action_key"
+        ssh-keygen -y -e -f "$HOME/.ssh/github_action_key"
 
     - name: Run Commands on GCP Instance
       uses: google-github-actions/ssh-compute@v1
