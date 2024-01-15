@@ -76,18 +76,19 @@ variable "compute_instance_image" {
   type        = string
 }
  
-variable "bigquery_dataset_id" {
-  description = "The ID of the BigQuery dataset"
+variable "prod_bigquery_dataset_id   " {
+  description = "prod BigQuery dataset"
   type        = string
 }
 
 
-variable "stg_bq_dataset" {
+variable "staging_bigquery_dataset_id" {
   description = "staging bigquery"
   type        = string
 }
 
 variable "network" {
   description = "Network for your instance/cluster"
+  default     = "default"
   type        = string
 }
