@@ -53,10 +53,12 @@ jobs:
     - name: Generate SSH Key
       run: |
         ssh-keygen -t rsa -f ~/.ssh/github_action_key -C ilhamaulanap2 -b 2048
+        
 
     - name: debug SSH Key
       run: |
         echo "Debugging Environment Variables:"
+        env
         echo "GCP_PROJECT_ID: $GCP_PROJECT_ID"
         echo "KAFKA_INSTANCE: $KAFKA_INSTANCE"
         echo "KAFKA_INSTANCE_ZONE: $KAFKA_INSTANCE_ZONE"
