@@ -32,13 +32,17 @@ jobs:
     - name: Use TFVars
       run: |
         TFVARS_FILE=${GITHUB_WORKSPACE}/terraform/terraform.tfvars
-        export GCP_PROJECT_ID=$(grep 'gcp_project' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]')
-        export KAFKA_INSTANCE=$(grep 'kafka_instance_name' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]')
-        export KAFKA_INSTANCE_ZONE=$(grep 'kafka_instance_zone' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]')
+        GCP_PROJECT_ID=$(grep 'gcp_project' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]')
+        KAFKA_INSTANCE=$(grep 'kafka_instance_name' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]')
+        KAFKA_INSTANCE_ZONE=$(grep 'kafka_instance_zone' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]')
 
         echo "GCP_PROJECT_ID: $GCP_PROJECT_ID"
         echo "KAFKA_INSTANCE: $KAFKA_INSTANCE"
         echo "KAFKA_INSTANCE_ZONE" : $KAFKA_INSTANCE_ZONE
+
+        export GCP_PROJECT_ID
+        export KAFKA_INSTANCE
+        export KAFKA_INSTANCE_ZONE
         
     - id: 'auth'
       uses: 'google-github-actions/auth@v2'
@@ -52,7 +56,7 @@ jobs:
     - name: debug SSH Key
       run: |
         echo "Debugging Environment Variables:"
-        echo "GCP_PROJECT: ${{ env.GCP_PROJECT }}"
+        echo "GCP_PROJECT_ID: ${{ env.GCP_PROJECT_ID }}"
         echo "KAFKA_INSTANCE: ${{ env.KAFKA_INSTANCE }}"
         echo "KAFKA_INSTANCE_ZONE: ${{ env.KAFKA_INSTANCE_ZONE }}"
         echo "$HOME/.ssh/github_action_key"
