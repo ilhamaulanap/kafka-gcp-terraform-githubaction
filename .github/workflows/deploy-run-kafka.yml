@@ -53,16 +53,50 @@ jobs:
         echo "KAFKA_INSTANCE_ZONE: $KAFKA_INSTANCE_ZONE"
         echo "GITHUB_REPOSITORY: $GITHUB_REPOSITORY"
 
-    - name: Run Commands on GCP Instance
+    - name: cloning git repository into compute engine
       uses: google-github-actions/ssh-compute@v1
       with:
         instance_name:  ${{ env.KAFKA_INSTANCE }}
         zone: ${{ env.KAFKA_INSTANCE_ZONE }}
         ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
-        command: |
-          git clone https://github.com/${{ env.GITHUB_REPOSITORY }}.git
-          cd "$(basename "${{ env.GITHUB_REPOSITORY }}")/kafka"
-          sudo apt-get update
-          sudo apt-get install -y docker.io
-          docker-compose build
-          docker-compose up -d
+        commands: 'git clone https://github.com/${{ env.GITHUB_REPOSITORY }}.git'
+
+    - name: change directory to where docker-compose located
+      uses: google-github-actions/ssh-compute@v1
+      with:
+        instance_name:  ${{ env.KAFKA_INSTANCE }}
+        zone: ${{ env.KAFKA_INSTANCE_ZONE }}
+        ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+        commands: 'cd "$(basename "${{ env.GITHUB_REPOSITORY }}")/kafka"'
+
+    - name: apt update
+      uses: google-github-actions/ssh-compute@v1
+      with:
+        instance_name:  ${{ env.KAFKA_INSTANCE }}
+        zone: ${{ env.KAFKA_INSTANCE_ZONE }}
+        ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+        commands: 'sudo apt-get update'
+
+    - name: install docker
+      uses: google-github-actions/ssh-compute@v1
+      with:
+        instance_name:  ${{ env.KAFKA_INSTANCE }}
+        zone: ${{ env.KAFKA_INSTANCE_ZONE }}
+        ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+        commands: 'sudo apt-get install -y docker.io'
+
+    - name: build image
+      uses: google-github-actions/ssh-compute@v1
+      with:
+        instance_name:  ${{ env.KAFKA_INSTANCE }}
+        zone: ${{ env.KAFKA_INSTANCE_ZONE }}
+        ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+        commands: 'docker-compose build'
+
+    - name: run kafka
+      uses: google-github-actions/ssh-compute@v1
+      with:
+        instance_name:  ${{ env.KAFKA_INSTANCE }}
+        zone: ${{ env.KAFKA_INSTANCE_ZONE }}
+        ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+        commands: 'docker-compose up -d'
