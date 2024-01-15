@@ -55,23 +55,16 @@ jobs:
         ssh-keygen -t rsa -f ~/.ssh/github_action_key -C ilhamaulanap2 -b 2048
         
 
-    - name: debug SSH Key
+    - name: set SSH Key as env
       run: |
-        echo "Debugging Environment Variables:"
-        echo "GCP_PROJECT_ID: $GCP_PROJECT_ID"
-        echo "KAFKA_INSTANCE: $KAFKA_INSTANCE"
-        echo "${{ env.KAFKA_INSTANCE }}"
-        echo "KAFKA_INSTANCE_ZONE: $KAFKA_INSTANCE_ZONE"
-        echo "$HOME/.ssh/github_action_key"
-        cat "$HOME/.ssh/github_action_key"
-        ssh-keygen -y -e -f "$HOME/.ssh/github_action_key"
+        echo "SSH_PRIVATE_KEY=$(cat ~/.ssh/github_action_key)" >> $GITHUB_ENV
 
     - name: Run Commands on GCP Instance
       uses: google-github-actions/ssh-compute@v1
       with:
         instance_name:  ${{ env.KAFKA_INSTANCE }}
         zone: ${{ env.KAFKA_INSTANCE_ZONE }}
-        ssh_private_key: "$HOME/.ssh/github_action_key"
+        ssh_private_key: ${{ env.SSH_PRIVATE_KEY }}
         command: |
           git clone https://github.com/${GITHUB_REPOSITORY}.git
           cd "$(basename "${GITHUB_REPOSITORY}")/kafka"
