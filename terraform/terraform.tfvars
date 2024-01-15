@@ -15,7 +15,7 @@ kafka_instance_name     = "de-projects-kafka"
 kafka_instance_type     = "e2-standard-2"
 kafka_instance_zone     = "asia-southeast1-b"
 kafka_disk_size         = 50
-kafka_port              = ["9092","80","443","9021"]
+kafka_port              = ["9092"]
 
 
 prod_bigquery_dataset_id       = "de_zoomcamp_datasets_prod"
