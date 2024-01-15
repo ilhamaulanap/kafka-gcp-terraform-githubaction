@@ -70,10 +70,6 @@ jobs:
         instance_name:  ${{ env.KAFKA_INSTANCE }}
         zone: ${{ env.KAFKA_INSTANCE_ZONE }}
         ssh_private_key: "$HOME/.ssh/github_action_key"
-         env:
-          GCP_PROJECT_ID: ${{ env.GCP_PROJECT_ID }}
-          KAFKA_INSTANCE: ${{ env.KAFKA_INSTANCE }}
-          KAFKA_INSTANCE_ZONE: ${{ env.KAFKA_INSTANCE_ZONE }}
         command: |
           git clone https://github.com/${GITHUB_REPOSITORY}.git
           cd "$(basename "${GITHUB_REPOSITORY}")/kafka"
