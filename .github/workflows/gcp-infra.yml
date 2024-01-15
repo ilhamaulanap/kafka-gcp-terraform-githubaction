@@ -1,4 +1,4 @@
-name: 'Deploy GCP Infrastructure (On Push Terraform Folder)'
+name: 'Create GCP Infrastructure (/Terraform)'
 
 on:
   push:

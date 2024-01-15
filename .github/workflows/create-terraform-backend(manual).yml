@@ -1,4 +1,4 @@
-name: 'Deploy Terraform Backend (Manual)'
+name: 'Deploy Terraform Backend (dispatch))'
 
 on:
   workflow_dispatch:
