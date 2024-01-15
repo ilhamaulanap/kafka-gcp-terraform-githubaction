@@ -58,7 +58,7 @@ jobs:
       with:
         instance_name: $KAFKA_INSTANCE
         zone: $KAFKA_INSTANCE_ZONE
-        ssh_private_key: $HOME/.ssh/github_action_key
+        ssh_private_key: $HOME/.ssh/github_action_key.pub
         command: |
           git clone https://github.com/ilhamaulanap/DE-zoomcamp.git
           cd "$(basename "ilhamaulanap/DE-zoomcamp")/kafka"
