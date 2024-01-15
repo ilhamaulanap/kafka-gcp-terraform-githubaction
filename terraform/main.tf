@@ -69,6 +69,22 @@ resource "google_compute_firewall" "port_rules" {
 
 }
 
+resource "google_compute_firewall" "cp_port_rules" {
+  project     = var.gcp_project
+  name        = "kafka-control-ports"
+  network     = var.network
+  description = "Opens port 9021 in the Kafka VM"
+
+  allow {
+    protocol = "tcp"
+    ports    = [var.kafka_cp_ports]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["kafka"]
+
+}
+
 # Create a BigQuery dataset
 
 resource "google_bigquery_dataset" "my_prod_dataset" {
