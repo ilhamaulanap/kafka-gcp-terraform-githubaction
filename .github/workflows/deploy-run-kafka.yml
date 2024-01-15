@@ -96,6 +96,7 @@ jobs:
         zone: ${{ env.KAFKA_INSTANCE_ZONE }}
         ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
         command: 'sudo reboot'
+      continue-on-error: true
 
     - name: Delay Step
       run: sleep 60  # This will add a 60-second delay
