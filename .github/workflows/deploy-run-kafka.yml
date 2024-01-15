@@ -48,10 +48,13 @@ jobs:
     - name: 'Set up Cloud SDK'
       uses: 'google-github-actions/setup-gcloud@v2'
 
-    - name: SSH into GCE Instance and 
+    - name: SSH into GCE Instance 
       run: |
-        gcloud compute ssh --zone "$KAFKA_INSTANCE_ZONE" "$KAFKA_INSTANCE" --project "$GCP_PROJECT" --quiet \
-            && git clone https://github.com/${{ github.repository }}.git \
+        gcloud compute ssh --zone "$KAFKA_INSTANCE_ZONE" "$KAFKA_INSTANCE" --project "$GCP_PROJECT" --quiet
+
+    - name: clone repo and deploy docker image
+      run: |
+        git clone https://github.com/${{ github.repository }}.git \
             && cd $(basename "${{ github.repository }}")/kafka \
             && sudo apt-get update \
             && sudo apt-get install -y docker.io \
