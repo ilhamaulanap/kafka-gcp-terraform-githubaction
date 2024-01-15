@@ -46,11 +46,9 @@ jobs:
         echo "KAFKA_INSTANCE: $KAFKA_INSTANCE"
         echo "KAFKA_INSTANCE_ZONE" : $KAFKA_INSTANCE_ZONE
 
-        export GCP_PROJECT_ID
-        export KAFKA_INSTANCE
-        export KAFKA_INSTANCE_ZONE
-
-        env
+        echo "::set-env name=GCP_PROJECT_ID::$GCP_PROJECT_ID"
+        echo "::set-env name=KAFKA_INSTANCE::$KAFKA_INSTANCE"
+        echo "::set-env name=KAFKA_INSTANCE_ZONE::$KAFKA_INSTANCE_ZONE" 
 
     - name: Generate SSH Key
       run: |
@@ -60,7 +58,6 @@ jobs:
     - name: debug SSH Key
       run: |
         echo "Debugging Environment Variables:"
-        env
         echo "GCP_PROJECT_ID: $GCP_PROJECT_ID"
         echo "KAFKA_INSTANCE: $KAFKA_INSTANCE"
         echo "KAFKA_INSTANCE_ZONE: $KAFKA_INSTANCE_ZONE"
