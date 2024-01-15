@@ -29,13 +29,16 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: Set Terraform Variables
+    - name: Use TFVars
       run: |
-        while IFS= read -r line; do
-          key=$(echo "$line" | cut -d'=' -f1 | tr -d '[:space:]')
-          value=$(echo "$line" | cut -d'=' -f2- | sed -e 's/^[ \t]*//')
-          export "$key"="$value"
-        done < <(grep -v '^#' "${GITHUB_WORKSPACE}/terraform/terraform.tfvars" | grep -v '^$')
+        TFVARS_FILE=${GITHUB_WORKSPACE}/terraform/terraform.tfvars
+        GCP_PROJECT=$(grep 'gcp_project' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]')
+        KAFKA_INSTANCE=$(grep 'kafka_instance_name' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]')
+        KAFKA_INSTANCE_ZONE=$(grep 'kafka_instance_zone' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]')
+
+        echo "GCP_PROJECT: $GCP_PROJECT"
+        echo "KAFKA_INSTANCE: $KAFKA_INSTANCE"
+        echo "KAFKA_INSTANCE_ZONE" : $KAFKA_INSTANCE_ZONE
     
     - id: 'auth'
       uses: 'google-github-actions/auth@v2'
@@ -47,7 +50,7 @@ jobs:
 
     - name: SSH into GCE Instance and 
       run: |
-        gcloud compute ssh --zone "$kafka_instance_zone" "$kafka_instance_name" --project "$gcp_project" \
+        gcloud compute ssh --zone "$KAFKA_INSTANCE_ZONE" "$KAFKA_INSTANCE" --project "$GCP_PROJECT" \
         && git clone https://github.com/${{ github.repository }}.git \ 
         && cd $(basename "${{ github.repository }}")/kafka \
         && sudo apt-get update \
