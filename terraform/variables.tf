@@ -76,7 +76,7 @@ variable "compute_instance_image" {
   type        = string
 }
  
-variable "prod_bigquery_dataset_id   " {
+variable "prod_bigquery_dataset_id" {
   description = "prod BigQuery dataset"
   type        = string
 }
