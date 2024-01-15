@@ -71,12 +71,6 @@ variable "kafka_ports" {
   type = string
 }
 
-variable "kafka_cp_ports" {
-  description = "kafka ports"
-  default = "9021"
-  type = string
-}
-
 variable "compute_instance_image" {
   description = "The image for the Compute Engine instance"
   type        = string

@@ -55,35 +55,18 @@ resource "google_compute_instance" "kafka_instance" {
 
 resource "google_compute_firewall" "port_rules" {
   project     = var.gcp_project
-  name        = "kafka-broker-port"
+  name        = "kafka-instance"
   network     = var.network
   description = "Opens port 9092 in the Kafka VM"
 
   allow {
     protocol = "tcp"
-    ports    = [var.kafka_ports]
+    ports    = var.kafka_ports
   }
 
   source_ranges = ["0.0.0.0/0"]
-  target_tags   = ["kafka"]
-
 }
 
-resource "google_compute_firewall" "cp_port_rules" {
-  project     = var.gcp_project
-  name        = "kafka-control-ports"
-  network     = var.network
-  description = "Opens port 9021 in the Kafka VM"
-
-  allow {
-    protocol = "tcp"
-    ports    = [var.kafka_cp_ports]
-  }
-
-  source_ranges = ["0.0.0.0/0"]
-  target_tags   = ["kafka"]
-
-}
 
 # Create a BigQuery dataset
 
