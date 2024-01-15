@@ -3,6 +3,11 @@ variable "gcp_project" {
   type        = string
 }
 
+variable "gcp_region" {
+  description = "The GCP region for resources"
+  type        = string
+}
+
 variable "credentials" {
     description = "Credential for cloud provisioning"
     type = string
@@ -34,10 +39,11 @@ variable "airflow_instance_zone" {
   type        = string
 }
 
-variable "airflow_instance_zone" {
-  description = "The zone of the airflow Engine instance"
-  type        = string
+variable "airflow_disk_size" {
+  description = "The airflow compute engine disk size"
+  type      = number
 }
+ 
 
 variable "kafka_instance_name" {
   description = "The name of the kafka cluster Engine instance"
@@ -54,22 +60,34 @@ variable "kafka_instance_zone" {
   type        = string
 }
 
-variable "kafka_instance_zone" {
-  description = "The zone of the kafka cluster Engine instance"
-  type        = string
+variable "kafka_disk_size" {
+  description = "The kafka compute engine disk size"
+  type      = number
 }
 
-variable "kafka_instance_image" {
+variable "kafka_ports" {
+  description = "kafka ports"
+  default = "9092"
+  type = string
+}
+
+variable "compute_instance_image " {
   description = "The image for the Compute Engine instance"
   type        = string
 }
-
+ 
 variable "bigquery_dataset_id" {
   description = "The ID of the BigQuery dataset"
   type        = string
 }
 
-variable "gcp_region" {
-  description = "The GCP region for resources"
+
+variable "stg_bq_dataset" {
+  description = "Storage class type for your bucket. Check official docs for more info."
+  type        = string
+}
+
+variable "network" {
+  description = "Network for your instance/cluster"
   type        = string
 }

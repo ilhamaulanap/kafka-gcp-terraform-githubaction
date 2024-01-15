@@ -47,13 +47,42 @@ resource "google_compute_instance" "kafka_instance" {
   }
 }
 
+resource "google_compute_firewall" "port_rules" {
+  project     = var.project
+  name        = "kafka-broker-port"
+  network     = var.network
+  description = "Opens port 9092 in the Kafka VM for Spark cluster to connect"
+
+  allow {
+    protocol = "tcp"
+    ports    = [var.kafka_ports]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["kafka"]
+
+}
 
 # Create a BigQuery dataset
-resource "google_bigquery_dataset" "my_dataset" {
-  dataset_id = var.bigquery_dataset_id
+
+resource "google_bigquery_dataset" "my_staging_dataset" {
+  dataset_id = var.prod_bigquery_dataset_id
   project    = var.gcp_project
+  delete_contents_on_destroy = true
 
   labels = {
     environment = "production"
   }
 }
+
+resource "google_bigquery_dataset" "my_staging_dataset" {
+  dataset_id = var.staging_bigquery_dataset_id
+  project    = var.gcp_project
+  delete_contents_on_destroy = true
+
+  labels = {
+    environment = "staging"
+  }
+}
+
+
