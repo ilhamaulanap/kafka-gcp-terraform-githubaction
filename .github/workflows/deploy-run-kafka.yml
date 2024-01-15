@@ -1,4 +1,4 @@
-name: 'Create GCP Infrastructure (/Terraform)'
+name: 'Deploy kafka to GCE'
 
 on:
   push:
