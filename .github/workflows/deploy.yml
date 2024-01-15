@@ -5,6 +5,10 @@ on:
     paths: 
     - 'terraform/**'
     branches: [ "main" ]
+  pull_request:
+    paths: 
+    - 'terraform/**'
+    branches: [ "main" ]
 
 permissions:
   contents: read
