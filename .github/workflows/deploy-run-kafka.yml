@@ -32,9 +32,10 @@ jobs:
     - name: Use TFVars
       run: |
         TFVARS_FILE=${GITHUB_WORKSPACE}/terraform/terraform.tfvars
-        GCP_PROJECT_ID=$(grep 'gcp_project' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]')
-        KAFKA_INSTANCE=$(grep 'kafka_instance_name' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]')
-        KAFKA_INSTANCE_ZONE=$(grep 'kafka_instance_zone' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]')
+        TFVARS_FILE=${GITHUB_WORKSPACE}/terraform/terraform.tfvars
+        export GCP_PROJECT_ID=$(grep 'gcp_project' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]')
+        export KAFKA_INSTANCE=$(grep 'kafka_instance_name' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]')
+        export KAFKA_INSTANCE_ZONE=$(grep 'kafka_instance_zone' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]')
 
         echo "GCP_PROJECT_ID: $GCP_PROJECT_ID"
         echo "KAFKA_INSTANCE: $KAFKA_INSTANCE"
@@ -56,9 +57,9 @@ jobs:
     - name: debug SSH Key
       run: |
         echo "Debugging Environment Variables:"
-        echo "GCP_PROJECT_ID: ${{ env.GCP_PROJECT_ID }}"
-        echo "KAFKA_INSTANCE: ${{ env.KAFKA_INSTANCE }}"
-        echo "KAFKA_INSTANCE_ZONE: ${{ env.KAFKA_INSTANCE_ZONE }}"
+        echo "GCP_PROJECT_ID: $GCP_PROJECT_ID"
+        echo "KAFKA_INSTANCE: $KAFKA_INSTANCE"
+        echo "KAFKA_INSTANCE_ZONE: $KAFKA_INSTANCE_ZONE"
         echo "$HOME/.ssh/github_action_key"
         cat "$HOME/.ssh/github_action_key"
         ssh-keygen -y -e -f "$HOME/.ssh/github_action_key"
@@ -69,6 +70,10 @@ jobs:
         instance_name:  ${{ env.KAFKA_INSTANCE }}
         zone: ${{ env.KAFKA_INSTANCE_ZONE }}
         ssh_private_key: "$HOME/.ssh/github_action_key"
+         env:
+          GCP_PROJECT_ID: ${{ env.GCP_PROJECT_ID }}
+          KAFKA_INSTANCE: ${{ env.KAFKA_INSTANCE }}
+          KAFKA_INSTANCE_ZONE: ${{ env.KAFKA_INSTANCE_ZONE }}
         command: |
           git clone https://github.com/${GITHUB_REPOSITORY}.git
           cd "$(basename "${GITHUB_REPOSITORY}")/kafka"
