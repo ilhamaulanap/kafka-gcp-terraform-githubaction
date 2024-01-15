@@ -51,9 +51,10 @@ jobs:
 
     - name: debug SSH Key
       run: |
-        echo $GCP_PROJECT_ID
-        echo ${{ env.KAFKA_INSTANCE }}
-        echo ${{ env.KAFKA_INSTANCE_ZONE }}
+        echo "Debugging Environment Variables:"
+        echo "GCP_PROJECT: ${{ env.GCP_PROJECT }}"
+        echo "KAFKA_INSTANCE: ${{ env.KAFKA_INSTANCE }}"
+        echo "KAFKA_INSTANCE_ZONE: ${{ env.KAFKA_INSTANCE_ZONE }}"
         echo "$HOME/.ssh/github_action_key"
         cat "$HOME/.ssh/github_action_key"
         ssh-keygen -y -e -f "$HOME/.ssh/github_action_key"
