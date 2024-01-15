@@ -28,6 +28,11 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
+        
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v2'
+      with:
+        credentials_json: '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}'
 
     - name: Use TFVars
       run: |
@@ -44,11 +49,6 @@ jobs:
         export GCP_PROJECT_ID
         export KAFKA_INSTANCE
         export KAFKA_INSTANCE_ZONE
-        
-    - id: 'auth'
-      uses: 'google-github-actions/auth@v2'
-      with:
-        credentials_json: '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}'
 
     - name: Generate SSH Key
       run: |
