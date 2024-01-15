@@ -14,7 +14,7 @@ permissions:
   contents: read
 
 jobs:
-  deploy:
+  kafka:
     name: 'kafka'
     runs-on: ubuntu-latest
     environment: production
@@ -26,26 +26,26 @@ jobs:
         shell: bash
     
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+    - name: Checkout
+      uses: actions/checkout@v3
 
-      - name: Load Terraform Configuration
-        run: |
-          export $(terraform output -json | jq -r 'to_entries | map("\(.key)=\(.value.value)") | .[]')
+    - name: Load Terraform Configuration
+      run: |
+        export $(terraform output -json | jq -r 'to_entries | map("\(.key)=\(.value.value)") | .[]')
 
-      - name: Configure Google Cloud SDK
-        uses: google-github-actions/setup-gcloud@master
-        with:
-          service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
-          project_id: $gcp_project 
-          compute_region: $gcp_region
-      
-       - name: SSH into GCE Instance and 
-        run: |
-          gcloud compute ssh --zone "$kafka_instance_zone" "$kafka_instance_name" --project "$gcp_project" && 
-          git clone https://github.com/${{ github.repository }}.git && 
-          cd $(basename "${{ github.repository }}")/kafka && 
-          sudo apt-get update &&
-          sudo apt-get install -y docker.io &&
-          docker-compose build && 
-          docker-compose up -d"
+    - name: Configure Google Cloud SDK
+      uses: google-github-actions/setup-gcloud@master
+      with:
+        service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+        project_id: $gcp_project 
+        compute_region: $gcp_region
+    
+      - name: SSH into GCE Instance and 
+      run: |
+        gcloud compute ssh --zone "$kafka_instance_zone" "$kafka_instance_name" --project "$gcp_project" \
+        && git clone https://github.com/${{ github.repository }}.git \ 
+        && cd $(basename "${{ github.repository }}")/kafka \
+        && sudo apt-get update \
+        && sudo apt-get install -y docker.io \
+        && docker-compose build \
+        && docker-compose up -d"
