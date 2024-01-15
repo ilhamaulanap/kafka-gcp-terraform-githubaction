@@ -39,4 +39,13 @@ jobs:
           service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
           project_id: $gcp_project 
           compute_region: $gcp_region
-
+      
+       - name: SSH into GCE Instance and 
+        run: |
+          gcloud compute ssh --zone "$kafka_instance_zone" "$kafka_instance_name" --project "$gcp_project" && 
+          git clone https://github.com/${{ github.repository }}.git && 
+          cd $(basename "${{ github.repository }}")/kafka && 
+          sudo apt-get update &&
+          sudo apt-get install -y docker.io &&
+          docker-compose build && 
+          docker-compose up -d"
