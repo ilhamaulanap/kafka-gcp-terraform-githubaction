@@ -70,7 +70,7 @@ jobs:
         instance_name:  ${{ env.KAFKA_INSTANCE }}
         zone: ${{ env.KAFKA_INSTANCE_ZONE }}
         ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
-        command: 'git clone -f https://github.com/${{ env.GITHUB_REPOSITORY }}.git'
+        command: 'git clone https://github.com/${{ env.GITHUB_REPOSITORY }}.git'
 
     - name: change directory to where docker-compose located
       uses: google-github-actions/ssh-compute@v1
