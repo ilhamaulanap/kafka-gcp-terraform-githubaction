@@ -39,6 +39,11 @@ jobs:
         echo "GCP_PROJECT: $GCP_PROJECT"
         echo "KAFKA_INSTANCE: $KAFKA_INSTANCE"
         echo "KAFKA_INSTANCE_ZONE" : $KAFKA_INSTANCE_ZONE
+        
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v2'
+      with:
+        credentials_json: '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}'
 
     - name: Generate SSH Key
       run: |
@@ -47,11 +52,7 @@ jobs:
     - name: Display Public Key
       run: |
         cat $HOME/.ssh/github_action_key
-    
-    - id: 'auth'
-      uses: 'google-github-actions/auth@v2'
-      with:
-        credentials_json: '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}'
+        chmod 600 $HOME/.ssh/github_action_key
 
     - name: Run Commands on GCP Instance
       uses: google-github-actions/ssh-compute@v1
