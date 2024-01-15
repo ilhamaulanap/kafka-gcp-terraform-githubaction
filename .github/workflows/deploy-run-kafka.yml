@@ -30,11 +30,11 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Set Terraform Variables
-        run: |
-          # Read terraform.tfvars and set environment variables
-          while IFS= read -r line; do
-            export "$line"
-          done < <(awk -F= '{print $1 "=" $2}' ./terraform/terraform.tfvars)
+      run: |
+        # Read terraform.tfvars and set environment variables
+        while IFS= read -r line; do
+          export "$line"
+        done < <(awk -F= '{print $1 "=" $2}' ./terraform/terraform.tfvars)
 
     - name: Configure Google Cloud SDK
       uses: google-github-actions/setup-gcloud@master
@@ -43,12 +43,12 @@ jobs:
         project_id: $gcp_project 
         compute_region: $gcp_region
     
-      - name: SSH into GCE Instance and 
-        run: |
-          gcloud compute ssh --zone "$kafka_instance_zone" "$kafka_instance_name" --project "$gcp_project" \
-          && git clone https://github.com/${{ github.repository }}.git \ 
-          && cd $(basename "${{ github.repository }}")/kafka \
-          && sudo apt-get update \
-          && sudo apt-get install -y docker.io \
-          && docker-compose build \
-          && docker-compose up -d"
+    - name: SSH into GCE Instance and 
+      run: |
+        gcloud compute ssh --zone "$kafka_instance_zone" "$kafka_instance_name" --project "$gcp_project" \
+        && git clone https://github.com/${{ github.repository }}.git \ 
+        && cd $(basename "${{ github.repository }}")/kafka \
+        && sudo apt-get update \
+        && sudo apt-get install -y docker.io \
+        && docker-compose build \
+        && docker-compose up -d"
