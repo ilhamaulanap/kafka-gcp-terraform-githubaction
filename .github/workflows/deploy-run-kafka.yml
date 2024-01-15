@@ -39,35 +39,31 @@ jobs:
         echo "GCP_PROJECT: $GCP_PROJECT"
         echo "KAFKA_INSTANCE: $KAFKA_INSTANCE"
         echo "KAFKA_INSTANCE_ZONE" : $KAFKA_INSTANCE_ZONE
+
+    - name: Generate SSH Key
+      run: |
+        ssh-keygen -t rsa -b 4096 -C "your_email@example.com" -f $HOME/.ssh/github_action_key -N ''
+        echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
+
+    - name: Display Public Key
+      run: |
+        cat $HOME/.ssh/github_action_key.pub
+        echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
     
     - id: 'auth'
       uses: 'google-github-actions/auth@v2'
       with:
         credentials_json: '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}'
 
-    - name: 'Set up Cloud SDK'
-      uses: 'google-github-actions/setup-gcloud@v2'
-
-    - name: Generate SSH key pair
-      run: |
-        ssh-keygen -t rsa -b 4096 -C "ilhamaulanap@gmail.com" -N "" -f ~/.ssh/gcp_key
-        chmod 600 ~/.ssh/gcp_key
-
-    - name: Copy public key to clipboard
-      run: |
-        cat ~/.ssh/gcp_key.pub
-        echo "Public key copied to clipboard. Add this to your Compute Engine instance's metadata or authorized_keys."
-
-    - name: SSH into GCP Instance
-      run: |
-         gcloud compute ssh $KAFKA_INSTANCE \
-          --zone $KAFKA_INSTANCE_ZONE \
-          --project $GCP_PROJECT \
-          --quiet \
-          --ssh-key-file=~/.ssh/gcp_key \
-          --command "git clone https://github.com/${{ github.repository }}.git && \
+    - id: compute-ssh
+      uses: google-github-actions/ssh-compute@v1
+      with:
+        instance_name: $KAFKA_INSTANCE
+        zone: $KAFKA_INSTANCE_ZONE
+        ssh_private_key: ${{ secrets.GITHUB_TOKEN }}
+        command: 'git clone https://github.com/${{ github.repository }}.git && \
                       cd \$(basename \"${{ github.repository }}\")/kafka && \
                       sudo apt-get update && \
                       sudo apt-get install -y docker.io && \
                       docker-compose build && \
-                      docker-compose up -d > /tmp/script_output.log 2>&1"
+                      docker-compose up -d'
