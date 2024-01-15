@@ -32,7 +32,9 @@ jobs:
     - name: Set Terraform Variables
       run: |
         while IFS= read -r line; do
-          export $line
+          key=$(echo "$line" | cut -d'=' -f1 | tr -d '[:space:]')
+          value=$(echo "$line" | cut -d'=' -f2- | sed -e 's/^[ \t]*//')
+          export "$key"="$value"
         done < <(grep -v '^#' "${GITHUB_WORKSPACE}/terraform/terraform.tfvars" | grep -v '^$')
     
     - id: 'auth'
