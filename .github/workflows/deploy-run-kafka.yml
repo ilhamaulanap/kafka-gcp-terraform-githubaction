@@ -60,8 +60,8 @@ jobs:
         zone: ${{ env.KAFKA_INSTANCE_ZONE }}
         ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
         command: |
-          git clone https://github.com/${GITHUB_REPOSITORY}.git
-          cd "$(basename "${GITHUB_REPOSITORY}")/kafka"
+          git clone https://github.com/${{ env.GITHUB_REPOSITORY }}.git
+          cd "$(basename "${{ env.GITHUB_REPOSITORY }}")/kafka"
           sudo apt-get update
           sudo apt-get install -y docker.io
           docker-compose build
