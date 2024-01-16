@@ -7,6 +7,7 @@ provider "google" {
 
 data "google_storage_bucket" "existing_bucket" {
   name = var.gcs_bucket_terraform
+  ignore_errors = true
 }
 
 
