@@ -89,19 +89,26 @@ jobs:
         ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
         command: 'sudo apt-get install -y docker.io docker-compose'
 
-    - name: edit user permission and reboot instance
+    - name: edit user permission
       uses: google-github-actions/ssh-compute@v1
       with:
         instance_name:  ${{ env.KAFKA_INSTANCE }}
         zone: ${{ env.KAFKA_INSTANCE_ZONE }}
         ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
-        command: 'sudo usermod -aG docker $USER && sudo reboot'
+        command: 'sudo usermod -aG docker $USER'
+
+    - name: reboot
+      uses: google-github-actions/ssh-compute@v1
+      with:
+        instance_name:  ${{ env.KAFKA_INSTANCE }}
+        zone: ${{ env.KAFKA_INSTANCE_ZONE }}
+        ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+        command: 'sudo reboot'
       continue-on-error: true
 
     - name: Delay Step
       run: sleep 60  # This will add a 60-second delay
-
-
+        
     - name: run kafka
       uses: google-github-actions/ssh-compute@v1
       with:
