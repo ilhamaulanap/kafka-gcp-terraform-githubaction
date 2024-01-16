@@ -55,7 +55,7 @@ resource "google_compute_instance" "kafka_instance" {
 
 resource "google_compute_firewall" "port_rules" {
   project     = var.gcp_project
-  name        = "kafka-instance"
+  name        = "kafka broker"
   network     = var.network
   description = "Opens port 9092 in the Kafka VM"
 

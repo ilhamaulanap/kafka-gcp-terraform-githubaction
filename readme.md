@@ -1,2 +1,2 @@
-## this is repo for trying to make ci/cd workflows for deploying infra in gcp template and deploying dockerized kafka, airflow and dbt in compute engine 
+## this is ci/cd workflows repo for deploying infra in gcp template and deploying dockerized kafka, airflow and dbt in compute engine 
 [![Deploy GCP Infrastructure](https://github.com/ilhamaulanap/DE-zoomcamp/actions/workflows/deploy.yml/badge.svg?branch=main&event=deployment_status)](https://github.com/ilhamaulanap/DE-zoomcamp/actions/workflows/deploy.yml)
