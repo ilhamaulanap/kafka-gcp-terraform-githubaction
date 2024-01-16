@@ -6,6 +6,7 @@ variable "gcp_project" {
 variable "credentials" {
     description = "Credential for cloud provisioning"
     type = string
+    default = "../credentials/key.json"
 }
 
 variable "gcs_bucket_terraform" {
