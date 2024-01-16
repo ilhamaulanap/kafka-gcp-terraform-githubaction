@@ -3,7 +3,7 @@ provider "google" {
   region      = var.gcp_region
 }
 
-## bucker for terraform state
+## bucker for terraform states
 
 resource "google_storage_bucket" "terraform_backend" {
   name          = var.gcs_bucket_terraform

@@ -28,21 +28,21 @@ jobs:
       uses: hashicorp/setup-terraform@v1
 
     - name: Print Google Credentials
-      run: echo "$GOOGLE_CREDENTIALS"
+      run: echo ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
       env:
-        GOOGLE_CREDENTIALS: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+        GOOGLE_CREDENTIALS: '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}'
 
     - name: Configure GCP credentials
       run:  terraform init
       env:
-        GOOGLE_CREDENTIALS: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+        GOOGLE_CREDENTIALS: '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}'
 
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
       run:  terraform plan -input=false
       env:
-        GOOGLE_CREDENTIALS: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+        GOOGLE_CREDENTIALS: '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}'
 
 
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
