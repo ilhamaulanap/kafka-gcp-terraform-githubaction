@@ -69,7 +69,7 @@ resource "google_compute_firewall" "port_rules" {
 
 resource "google_compute_firewall" "allow_http" {
   project     = var.gcp_project
-  name        = "default-allow-http"
+  name        = "allow-http"
   network     = var.network
   description = "Opens port 80 in the Kafka VM"
 
