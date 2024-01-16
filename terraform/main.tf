@@ -4,7 +4,7 @@ provider "google" {
   region      = var.gcp_region
 }
 
-# Create a GCS bucket
+# Create a GCS buckets
 resource "google_storage_bucket" "my_bucket" {
   name          = var.gcs_bucket_name
   location      = var.gcs_bucket_location
