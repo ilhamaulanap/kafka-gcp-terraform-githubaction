@@ -22,4 +22,4 @@ prod_bigquery_dataset_id       = "de_zoomcamp_datasets_prod"
 staging_bigquery_dataset_id       = "de_zoomcamp_datasets_staging"
 
 # change this to path of your gcp key files if you want to run this repo locally
-credentials               = "key.json" # create a secret in github and add the gcp key 
+#credentials               = "key.json" # create a secret in github and add the gcp key 
