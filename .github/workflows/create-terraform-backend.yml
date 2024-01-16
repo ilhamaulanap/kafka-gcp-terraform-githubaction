@@ -23,6 +23,10 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v2'
+      with:
+        credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
     # Install the latest version of Terraform CLI and configure GCP credentials
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -30,29 +34,29 @@ jobs:
     - name: export Credential key to github env
       run: |
 
-        export GOOGLE_CREDENTIALS=${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
-        echo GOOGLE_CREDENTIALS=${{ secrets.GCP_SERVICE_ACCOUNT_KEY }} >> $GITHUB_ENV
+        export GOOGLE_CREDENTIALS=${{ secrets.GOOGLE_CREDENTIALS }}
+        echo GOOGLE_CREDENTIALS=${{ secrets.GOOGLE_CREDENTIALS }} >> $GITHUB_ENV
 
     - name: Print Google Credentials
-      run: echo GOOGLE_CREDENTIALS:${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+      run: echo GOOGLE_CREDENTIALS:${{ secrets.GOOGLE_CREDENTIALS }}
       env:
-        GOOGLE_CREDENTIALS: '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}'
+        GOOGLE_CREDENTIALS: '${{ secrets.GOOGLE_CREDENTIALS }}'
 
     - name: Configure GCP credentials
       run:  terraform init
       env:
-        GOOGLE_CREDENTIALS: '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}'
+        GOOGLE_CREDENTIALS: '${{ secrets.GOOGLE_CREDENTIALS }}'
 
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
       run:  terraform plan -input=false
       env:
-        GOOGLE_CREDENTIALS: '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}'
+        GOOGLE_CREDENTIALS: '${{ secrets.GOOGLE_CREDENTIALS }}'
 
 
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
     - name: Terraform Apply
       run:  terraform apply -auto-approve -input=false
       env:
-        GOOGLE_CREDENTIALS: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+        GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
