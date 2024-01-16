@@ -26,9 +26,15 @@ jobs:
     # Install the latest version of Terraform CLI and configure GCP credentials
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
+      
+    - name: export Credential key to github env
+      run: |
+
+        export GOOGLE_CREDENTIALS=${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+        echo GOOGLE_CREDENTIALS=${{ secrets.GCP_SERVICE_ACCOUNT_KEY }} >> $GITHUB_ENV
 
     - name: Print Google Credentials
-      run: echo ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+      run: echo GOOGLE_CREDENTIALS:${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
       env:
         GOOGLE_CREDENTIALS: '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}'
 
