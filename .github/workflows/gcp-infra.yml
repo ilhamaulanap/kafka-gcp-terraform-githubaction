@@ -16,7 +16,6 @@ permissions:
 jobs:
   terraform_backend:
     uses: ./.github/workflows/create-terraform-backend.yml
-    with:
     secrets: inherit
   terraform_gcp:
     name: 'Terraform_gcp'
