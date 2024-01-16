@@ -11,7 +11,7 @@ data "google_storage_bucket" "existing_bucket" {
 
 
 resource "google_storage_bucket" "terraform_backend" {
-  count         = data.google_storage_bucket.existing_bucket > 0 ? 0 : 1
+  count         = length(data.google_storage_bucket.existing_bucket) > 0 ? 0 : 1
   name          = var.gcs_bucket_terraform
   location      = var.gcs_bucket_location
   force_destroy = true
