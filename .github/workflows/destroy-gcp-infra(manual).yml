@@ -27,12 +27,11 @@ jobs:
       uses: hashicorp/setup-terraform@v1
 
     - name: Configure GCP credentials
-      run: |
-        terraform init
+      run: terraform init
       env:
-        GCP_SERVICE_ACCOUNT_KEY: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+        GOOGLE_CREDENTIALS: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
 
     - name: Terraform destroy
       run: terraform destroy -auto-approve
       env:
-        GCP_SERVICE_ACCOUNT_KEY: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+        GOOGLE_CREDENTIALS: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
