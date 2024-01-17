@@ -130,7 +130,7 @@ jobs:
         command: curl -s ifconfig.co
     
     - name: Kafka control center link
-      run: echo "EXTERNAL_IP=${{ steps.external-ip.outputs.command }}" >> $GITHUB_ENV
+      run: echo "EXTERNAL_IP=${{ steps.external-ip.outputs.stdout }}" >> $GITHUB_ENV
 
     - name: Kafka control center link to Summary
-      run: echo "the kafka control is live on http://$EXTERNAL_IP:$KAFKA_CONTROL_PORT" >> $GITHUB_ENV
+      run: echo "the kafka control is live on http://$EXTERNAL_IP:$KAFKA_CONTROL_PORT" >> $GITHUB_STEP_SUMMARY
