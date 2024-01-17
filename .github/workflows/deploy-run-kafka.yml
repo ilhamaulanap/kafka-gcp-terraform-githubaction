@@ -40,7 +40,7 @@ jobs:
         export GCP_PROJECT_ID=$(grep 'gcp_project' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]' | tr -d '"')
         export KAFKA_INSTANCE=$(grep 'kafka_instance_name' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]' | tr -d '"')
         export KAFKA_INSTANCE_ZONE=$(grep 'kafka_instance_zone' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]' | tr -d '"')
-        export KAFKA_CONTROL_PORT=$(grep 'kafka_control_port' $TFVARS_FILE | awk -F'[:=]' '{gsub(/[\[\]"[:space:]]/, "", $2); print $2}' | tr -cd '0-9')
+        export KAFKA_CONTROL_PORT=$(grep 'kafka_control_port' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]' | tr -d '"')
 
         export GITHUB_REPOSITORY=${GITHUB_REPOSITORY}
 
