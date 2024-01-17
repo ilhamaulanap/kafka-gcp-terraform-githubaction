@@ -40,7 +40,7 @@ jobs:
         export GCP_PROJECT_ID=$(grep 'gcp_project' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]' | tr -d '"')
         export KAFKA_INSTANCE=$(grep 'kafka_instance_name' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]' | tr -d '"')
         export KAFKA_INSTANCE_ZONE=$(grep 'kafka_instance_zone' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]' | tr -d '"')
-        export KAFKA_CONTROL_PORT=$(grep 'kafka_control_port' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]' | tr -d '["]')
+        export KAFKA_CONTROL_PORT=$(grep 'kafka_control_port' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]' | tr -d '[:space:]"[]')
 
         export GITHUB_REPOSITORY=${GITHUB_REPOSITORY}
 
@@ -129,7 +129,7 @@ jobs:
         ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
         command: 'echo "EXTERNAL_IP=$(curl -s ifconfig.co)" >> $GITHUB_OUTPUT'
     
-    - name: show kafka control center link
+    - name: Kafka control center link
       env:
         EXTERNAL_IP: ${{ steps.external-ip.outputs.EXTERNAL_IP }}
-      run: echo "Kafka Successfully deployed, access control center in http://$EXTERNAL_IP:${{ env.KAFKA_CONTROL_PORT }}"
+      run: echo "Kafka Successfully deployed, access control center in http://$EXTERNAL_IP:${{ env.KAFKA_CONTROL_PORT }}" >> $GITHUB_STEP_SUMMARY
