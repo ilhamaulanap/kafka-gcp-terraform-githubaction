@@ -1,3 +1,5 @@
+backend_bucket          = "de-zoomcamp-terraform-state-backend"
+
 gcp_project               = "de-datapipeline"
 gcp_region                = "asia-southeast1 "
 

@@ -1,4 +1,4 @@
-name: 'Deploy Terraform Backend'
+name: 'Create Terraform Backend Bucket'
 
 on:
   workflow_call:
@@ -16,7 +16,7 @@ jobs:
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
       run:
-        working-directory: ./terraform/backend
+        working-directory: ./terraform
         shell: bash
 
     steps:
@@ -24,25 +24,32 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    # Install the latest version of Terraform CLI and configure GCP credentials
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
+    - name: export necessary variable to github env
+      run: |
+        TFVARS_FILE=${GITHUB_WORKSPACE}/terraform/terraform.tfvars
+        export BACKEND_BUCKET=$(grep 'backend_bucket' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]' | tr -d '"')
+        export GCS_BUCKET_LOCATION=$(grep 'gcs_bucket_location' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]' | tr -d '"')
+
+        echo BACKEND_BUCKET=$BACKEND_BUCKET >> $GITHUB_ENV
+        echo GCS_BUCKET_LOCATION=$GCS_BUCKET_LOCATION >> $GITHUB_ENV
+
+        echo "BACKEND_BUCKET: $BACKEND_BUCKET"
+        echo "GCS_BUCKET_LOCATION: $GCS_BUCKET_LOCATION"
       
-    - name: Configure GCP credentials
-      run:  terraform init
-      env:
-        GOOGLE_CREDENTIALS: '${{ secrets.GOOGLE_CREDENTIALS }}'
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v2'
+      with:
+        credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
 
 
-    # Generates an execution plan for Terraform
-    - name: Terraform Plan
-      run:  terraform plan -input=false
-      env:
-        GOOGLE_CREDENTIALS: '${{ secrets.GOOGLE_CREDENTIALS }}'
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v2
 
-
-      # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
-    - name: Terraform Apply
-      run:  terraform apply -auto-approve -input=false
-      env:
-        GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+    - name: Check if bucket exists, if not create new
+      run: |
+        if ! gsutil ls -b gs://${{ env.BACKEND_BUCKET }}; then
+          gsutil mb -l ${{ env.GCS_BUCKET_LOCATION }} gs://${{ env.BACKEND_BUCKET }}
+          echo "Bucket created successfully!"
+        else
+          echo "Bucket already exists."
+        fi

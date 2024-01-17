@@ -13,6 +13,11 @@ variable "credentials" {
     type = string
 }
 
+variable "backend_bucket" {
+  description = "The name of the GCS bucket for terraform backend"
+  type        = string
+}
+
 variable "gcs_bucket_name" {
   description = "The name of the GCS bucket"
   type        = string
