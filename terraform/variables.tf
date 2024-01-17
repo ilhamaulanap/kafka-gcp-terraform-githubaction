@@ -72,12 +72,12 @@ variable "kafka_disk_size" {
 
 variable "kafka_port" {
   description = "kafka ports"
-  type = list(string)
+  type = string
 }
 
 variable "kafka_control_port" {
   description = "kafka ports"
-  type = list(string)
+  type = string
 }
 
 variable "compute_instance_image" {
