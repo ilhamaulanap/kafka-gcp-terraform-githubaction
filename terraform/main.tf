@@ -1,5 +1,5 @@
 provider "google" {
-  #credentials = var.credentials
+  #credentials = var.credentials #use credentials if run locally
   project     = var.gcp_project
   region      = var.gcp_region
 }

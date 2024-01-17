@@ -10,6 +10,7 @@ variable "gcp_region" {
 
 variable "credentials" {
     description = "Credential for cloud provisioning"
+    default = "../credentials/key.json"
     type = string
 }
 
