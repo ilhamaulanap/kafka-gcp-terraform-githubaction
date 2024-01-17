@@ -127,7 +127,7 @@ jobs:
         instance_name: ${{ env.KAFKA_INSTANCE }}
         zone: ${{ env.KAFKA_INSTANCE_ZONE }}
         ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
-        command: 'echo "EXTERNAL_IP=$(curl -s ifconfig.co)" >> $GITHUB_OUTPUT'
+        command: curl -s ifconfig.co
     
     - name: Kafka control center link
       env:
