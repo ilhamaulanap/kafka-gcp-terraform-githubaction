@@ -40,7 +40,7 @@ jobs:
         export GCP_PROJECT_ID=$(grep 'gcp_project' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]' | tr -d '"')
         export KAFKA_INSTANCE=$(grep 'kafka_instance_name' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]' | tr -d '"')
         export KAFKA_INSTANCE_ZONE=$(grep 'kafka_instance_zone' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]' | tr -d '"')
-        export KAFKA_CONTROL_PORT=$(grep 'kafka_control_port'$TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]' | tr -d '"')
+        export KAFKA_CONTROL_PORT=$(grep 'kafka_control_port' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]' | tr -d '"')
 
         export GITHUB_REPOSITORY=${GITHUB_REPOSITORY}
 
@@ -130,6 +130,7 @@ jobs:
         command: curl -s ifconfig.co
     
     - name: Kafka control center link
-      env:
-        EXTERNAL_IP: ${{ steps.external-ip.outputs.EXTERNAL_IP }}
-      run: echo "Kafka Successfully deployed, access control center in http://$EXTERNAL_IP:${{ env.KAFKA_CONTROL_PORT }}" >> $GITHUB_STEP_SUMMARY
+      run: echo "EXTERNAL_IP=${{ steps.external-ip.outputs.command }}" >> $GITHUB_ENV
+
+    - name: Kafka control center link to Summary
+      run: echo "the kafka control is live on http://$EXTERNAL_IP:$KAFKA_CONTROL_PORT" >> $GITHUB_ENV
