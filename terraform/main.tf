@@ -95,6 +95,19 @@ resource "google_compute_firewall" "allow_http" {
   source_ranges = ["0.0.0.0/0"]
 }
 
+resource "google_compute_firewall" "allow_https" {
+  project     = var.gcp_project
+  name        = "allow-https"
+  network     = var.network
+  description = "Opens port 80 in the Kafka VM"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["443"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+}
 
 # Create a BigQuery dataset
 
