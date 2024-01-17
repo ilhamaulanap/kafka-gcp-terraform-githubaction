@@ -133,4 +133,4 @@ jobs:
       run: echo "EXTERNAL_IP=${{ steps.external-ip.outputs.stdout }}" >> $GITHUB_ENV
 
     - name: Kafka control center link to Summary
-      run: echo "the kafka control is live on http://$EXTERNAL_IP:$KAFKA_CONTROL_PORT" >> $GITHUB_STEP_SUMMARY
+      run: echo "Kafka control server is live on http://$EXTERNAL_IP:$KAFKA_CONTROL_PORT" >> $GITHUB_STEP_SUMMARY
