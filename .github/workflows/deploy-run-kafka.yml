@@ -40,18 +40,21 @@ jobs:
         export GCP_PROJECT_ID=$(grep 'gcp_project' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]' | tr -d '"')
         export KAFKA_INSTANCE=$(grep 'kafka_instance_name' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]' | tr -d '"')
         export KAFKA_INSTANCE_ZONE=$(grep 'kafka_instance_zone' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]' | tr -d '"')
+        export KAFKA_CONTROL_PORT=$(grep 'kafka_control_port' $TFVARS_FILE | awk -F'[:=]' '{print $2}' | tr -d '[:space:]' | tr -d '[]"')
 
         export GITHUB_REPOSITORY=${GITHUB_REPOSITORY}
 
         echo GCP_PROJECT_ID=$GCP_PROJECT_ID >> $GITHUB_ENV
         echo KAFKA_INSTANCE=$KAFKA_INSTANCE >> $GITHUB_ENV
         echo KAFKA_INSTANCE_ZONE=$KAFKA_INSTANCE_ZONE >> $GITHUB_ENV
+        echo KAFKA_CONTROL_PORT=$KAFKA_CONTROL_PORT" >> $GITHUB_EN
         echo "GITHUB_REPOSITORY=$GITHUB_REPOSITORY" >> $GITHUB_ENV
         echo "GITHUB_REPO_NAME=$(basename -s .git $GITHUB_REPOSITORY)" >> $GITHUB_ENV
 
         echo "GCP_PROJECT_ID: $GCP_PROJECT_ID"
         echo "KAFKA_INSTANCE: $KAFKA_INSTANCE"
         echo "KAFKA_INSTANCE_ZONE: $KAFKA_INSTANCE_ZONE"
+        echo "KAFKA_CONTROL_PORT: $KAFKA_CONTROL_PORT"
         echo "GITHUB_REPOSITORY: $GITHUB_REPOSITORY"
         echo "GITHUB_REPO_NAME: $GITHUB_REPO_NAME"
 
@@ -116,3 +119,17 @@ jobs:
         zone: ${{ env.KAFKA_INSTANCE_ZONE }}
         ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
         command: 'docker-compose -f ${{ env.GITHUB_REPO_NAME }}/kafka/docker-compose.yml up -d'
+
+    - name: Export the external IP of the Instance
+      id: external-ip
+      uses: google-github-actions/ssh-compute@v1
+      with:
+        instance_name: ${{ env.KAFKA_INSTANCE }}
+        zone: ${{ env.KAFKA_INSTANCE_ZONE }}
+        ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+        command: 'echo "EXTERNAL_IP=$(curl -s ifconfig.co)" >> $GITHUB_OUTPUT'
+    
+    - name: show kafka control center link
+      env:
+        EXTERNAL_IP: ${{ steps.external-ip.outputs.EXTERNAL_IP }}
+      run: echo "Kafka Successfully deployed, access control center in http://$EXTERNAL_IP:${{ env.KAFKA_CONTROL_PORT }}"
