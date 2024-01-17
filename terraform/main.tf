@@ -67,6 +67,20 @@ resource "google_compute_firewall" "port_rules" {
   source_ranges = ["0.0.0.0/0"]
 }
 
+resource "google_compute_firewall" "kafka_port_rules" {
+  project     = var.gcp_project
+  name        = "kafka-control"
+  network     = var.network
+  description = "Opens port 9092 in the Kafka VM"
+
+  allow {
+    protocol = "tcp"
+    ports    = var.kafka_control_ports
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+}
+
 resource "google_compute_firewall" "allow_http" {
   project     = var.gcp_project
   name        = "allow-http"

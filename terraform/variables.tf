@@ -72,7 +72,11 @@ variable "kafka_disk_size" {
 
 variable "kafka_ports" {
   description = "kafka ports"
-  default = ["9092"]
+  type = list(string)
+}
+
+variable "kafka_control_ports" {
+  description = "kafka ports"
   type = list(string)
 }
 
