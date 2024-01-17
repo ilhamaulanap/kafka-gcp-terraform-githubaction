@@ -61,7 +61,7 @@ resource "google_compute_firewall" "port_rules" {
 
   allow {
     protocol = "tcp"
-    ports    = var.kafka_ports
+    ports    = var.kafka_port
   }
 
   source_ranges = ["0.0.0.0/0"]
@@ -75,7 +75,7 @@ resource "google_compute_firewall" "kafka_port_rules" {
 
   allow {
     protocol = "tcp"
-    ports    = var.kafka_control_ports
+    ports    = var.kafka_control_port
   }
 
   source_ranges = ["0.0.0.0/0"]

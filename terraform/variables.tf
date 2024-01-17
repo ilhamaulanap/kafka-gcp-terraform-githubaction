@@ -70,12 +70,12 @@ variable "kafka_disk_size" {
   type      = number
 }
 
-variable "kafka_ports" {
+variable "kafka_port" {
   description = "kafka ports"
   type = list(string)
 }
 
-variable "kafka_control_ports" {
+variable "kafka_control_port" {
   description = "kafka ports"
   type = list(string)
 }
