@@ -30,15 +30,14 @@ jobs:
         export BACKEND_BUCKET=$(grep 'backend_bucket' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]' | tr -d '"')
         export GCS_BUCKET_LOCATION=$(grep 'gcs_bucket_location' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]' | tr -d '"')
 
-        export GITHUB_WORKSPACE=${GITHUB_WORKSPACE}
 
-        echo GITHUB_WORKPACE=$GITHUB_WORKSPACE >> $GITHUB_ENV
+       
         echo BACKEND_BUCKET=$BACKEND_BUCKET >> $GITHUB_ENV
         echo GCS_BUCKET_LOCATION=$GCS_BUCKET_LOCATION >> $GITHUB_ENV
 
         echo "BACKEND_BUCKET: $BACKEND_BUCKET"
         echo "GCS_BUCKET_LOCATION: $GCS_BUCKET_LOCATION"
-        echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
+       
       
     - id: 'auth'
       uses: 'google-github-actions/auth@v2'
