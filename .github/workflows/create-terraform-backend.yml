@@ -45,11 +45,5 @@ jobs:
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v2
 
-    - name: Check if bucket exists, if not create new
-      run: |
-        if ! gsutil ls -b gs://${{ env.BACKEND_BUCKET }}; then
-          gsutil mb -l ${{ env.GCS_BUCKET_LOCATION }} gs://${{ env.BACKEND_BUCKET }}
-          echo "Bucket created successfully!"
-        else
-          echo "Bucket already exists."
-        fi
+    - name: execute create_backend.sh to check if bucket exists, if not create new
+      run: bash ${GITHUB_WOKSPACE}/terraform/create_backend.sh ${{ env.BACKEND_BUCKET }} ${{ env.GCS_BUCKET_LOCATION }}
