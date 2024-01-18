@@ -30,14 +30,11 @@ jobs:
         export BACKEND_BUCKET=$(grep 'backend_bucket' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]' | tr -d '"')
         export GCS_BUCKET_LOCATION=$(grep 'gcs_bucket_location' $TFVARS_FILE | awk -F= '{print $2}' | tr -d '[:space:]' | tr -d '"')
 
-
-       
         echo BACKEND_BUCKET=$BACKEND_BUCKET >> $GITHUB_ENV
         echo GCS_BUCKET_LOCATION=$GCS_BUCKET_LOCATION >> $GITHUB_ENV
 
         echo "BACKEND_BUCKET: $BACKEND_BUCKET"
         echo "GCS_BUCKET_LOCATION: $GCS_BUCKET_LOCATION"
-       
       
     - id: 'auth'
       uses: 'google-github-actions/auth@v2'
@@ -48,5 +45,11 @@ jobs:
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v2
 
-    - name: execute create_backend.sh to check if bucket exists, if not create new
-      run: bash ${GITHUB_WOKSPACE}/terraform/create_backend.sh ${{ env.BACKEND_BUCKET }} ${{ env.GCS_BUCKET_LOCATION }}
+    - name: Check if bucket exists, if not create new
+      run: |
+        if ! gsutil ls -b gs://${{ env.BACKEND_BUCKET }}; then
+          gsutil mb -l ${{ env.GCS_BUCKET_LOCATION }} gs://${{ env.BACKEND_BUCKET }}
+          echo "Bucket created successfully!"
+        else
+          echo "Bucket already exists."
+        fi
