@@ -1,4 +1,5 @@
-backend_bucket          = "de-zoomcamp-terraform-state-backend"
+backend_bucket          = "kafka-terraform-state-backend-202402"
+GCS_BUCKET_LOCATION     = "ASIA"
 
 gcp_project               = "de-datapipeline"
 gcp_region                = "asia-southeast1 "
