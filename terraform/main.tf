@@ -4,7 +4,7 @@ provider "google" {
   region      = var.gcp_region
 }
 
-# create compute engine for kafka instance
+
 resource "google_compute_instance" "kafka_instance" {
   name         = var.kafka_instance_name
   machine_type = var.kafka_instance_type
@@ -80,4 +80,6 @@ resource "google_compute_firewall" "allow_https" {
 
   source_ranges = ["0.0.0.0/0"]
 }
+
+
 

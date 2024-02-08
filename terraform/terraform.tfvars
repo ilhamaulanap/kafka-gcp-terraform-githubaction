@@ -1,7 +1,7 @@
 backend_bucket          = "kafka-terraform-state-backend-202402"
 GCS_BUCKET_LOCATION     = "ASIA"
 
-gcp_project               = "de-datapipeline"
+gcp_project               = "de-zoomcamp-412415"
 gcp_region                = "asia-southeast1 "
 
 compute_instance_image    = "ubuntu-os-cloud/ubuntu-2004-lts"
