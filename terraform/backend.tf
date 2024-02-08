@@ -1,7 +1,7 @@
 #create backend-bucket to stroe terraform state files
 terraform {
   backend "gcs" {
-    bucket         = var.backend_bucket
+    bucket         = "kafka-terraform-state-backend-202402"
     prefix         = "/terraform.tfstate"
   }
 }
